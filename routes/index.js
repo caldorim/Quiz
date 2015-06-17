@@ -18,4 +18,7 @@ router.get('/quizes/question', quizController.question);
 //La ruta es /quizes/answer
 router.get('/quizes/answer', quizController.answer);
 
+//Añadimos un get para los autores
+router.get('/author', quizController.author);
+
 module.exports = router;
