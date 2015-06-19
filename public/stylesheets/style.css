@@ -8,3 +8,25 @@ section > div		{ padding: 20px;}
 header, nav, section{ background: #eee; text-align: center; }
 footer				{ background: #eee; text-align: center; }
 nav span 			{ margin: 0px 10px 0px 0px; }
+
+table               { width: 80%; 
+	                  font-size: 12px;    
+	                  margin-left: auto; margin-right: auto; margin-top: 10px;  
+	                  text-align: center;    
+	                  border-collapse: collapse; }
+
+th                  { font-size: 13px;     
+	                  font-weight: bold;     
+	                  padding: 8px;     
+	                  background: #888;
+                      border-top: 4px solid #555;    
+                      border-bottom: 1px solid #fff; 
+                      color: #fff; }
+
+td                  { padding: 8px; 
+	                  background: #ddd;     
+	                  border-top: 1px solid transparent; border-bottom: 1px solid #fff;
+                      color: #000; }
+
+tr:hover td         { background: #ccc; 
+	                  color: #222; }

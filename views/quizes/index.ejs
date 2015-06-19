@@ -1,4 +1,14 @@
+<form method="get" action="/quizes">
+	Filtrar con:
+	<input type="text" name="search"/>
+	<input type="submit" value="Buscar">
+</form>
 <table>
+  <tr>
+    <th>
+      PREGUNTAS
+    </th>
+  </tr>
 <% var i; for (i=0; i < quizes.length; i++) { %> 
   <tr>
     <td>

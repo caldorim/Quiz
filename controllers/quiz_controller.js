@@ -1,5 +1,10 @@
 var models = require('../models/models.js'); //models.js importa a su vez a quiz
 
+//Función que sustituye los espacios en blanco por % y añade sendos % al comienzo y al final
+function limpiarAcentos(str) {
+	var a = "%" + str.replace(/ /g,"%") + "%";
+}
+
 //Autoload - factoriza el código si la ruta incluye :quizId
 exports.load = function(req, res, next, quizId) {
   models.Quiz.find(quizId).then(
@@ -16,7 +21,12 @@ exports.load = function(req, res, next, quizId) {
 };
 
 exports.index = function(req, res) {
-  models.Quiz.findAll().then(function(quizes) {
+  //Se captura el parámetro "search" (ver /quizes/index.ejs) para filtrar
+  var buscar = req.query.search||"";
+  buscar = "%" + buscar.replace(/ /g,"%") + "%"; //Sustituimos los espacios en blanco por %
+  console.log("Cadena a buscar: "+buscar);
+
+  models.Quiz.findAll({where: ["pregunta like ?", buscar]}).then(function(quizes) {
   	res.render('quizes/index.ejs', { quizes: quizes});
   }).catch(function(error) { next(error);})
 };
