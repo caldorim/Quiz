@@ -40,11 +40,6 @@ sequelize.sync().then(function() {
     	Quiz.create({ pregunta: 'Capital de Portugal',
                       respuesta: 'Lisboa' })
     	.then(function(){console.log('Base de datos inicializada')});
-    }
-    else if (count === 1) { //Añado este if porque no consigo eliminar la BD de heroku con sólo una pregunta
-    	Quiz.create({ pregunta: 'Capital de Portugal',
-                      respuesta: 'Lisboa' })
-    	.then(function(){console.log('Base de datos inicializada')});
-    }
+    };
   });
 });
