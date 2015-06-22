@@ -27,12 +27,12 @@ exports.index = function(req, res) {
   console.log("Cadena a buscar: "+buscar);
 
   models.Quiz.findAll({where: ["lower(pregunta) like ?", buscar]}).then(function(quizes) {
-  	res.render('quizes/index.ejs', { quizes: quizes});
+  	res.render('quizes/index.ejs', { quizes: quizes, errors: []});
   }).catch(function(error) { next(error);})
 };
 
 exports.show = function(req, res) {
-  res.render('quizes/show', { quiz: req.quiz});
+  res.render('quizes/show', { quiz: req.quiz, errors: []});
 };
 
 // GET /quizes/:id/answer
@@ -44,7 +44,7 @@ exports.answer = function(req, res) {
   queryResp = limpiarAcentos(queryResp.toLowerCase());
   quizResp = limpiarAcentos(quizResp.toLowerCase());
   if (queryResp === quizResp) resultado = "Correcto";
-  res.render('quizes/answer', { quiz: req.quiz, respuesta: resultado});	
+  res.render('quizes/answer', { quiz: req.quiz, respuesta: resultado, errors: []});	
 };
 
 // GET /quizes/new
@@ -53,18 +53,27 @@ exports.new = function(req,res) {
 		  //Los campos deben ser iguales a los campos de la tabla
           pregunta: "Pregunta", respuesta: "Respuesta"
 		});
-	res.render('quizes/new', {quiz: quiz});
+	res.render('quizes/new', {quiz: quiz, errors: []});
 };
 
 // POST /quizes/create
 exports.create = function(req, res) {
 	var quiz = models.Quiz.build( req.body.quiz ); //lo inicializa con el objeto body (paso de parámetros)
 
-	//guarda en la DB los campos pregunta y respuesta de quiz
-	quiz.save({fields: ["pregunta", "respuesta"]}).then(function(){ //solo los campos pregunta y respuesta para evitar virus
-		res.redirect('/quizes'); // Redirección HTTP (URL relativo) lista de preguntas, pues /quizes/create no tiene vista asociada
-	}); 
-}
+	quiz.validate().then(  //validate() la construye automaticamente sequelize
+		function(err) {
+			if (err) {
+				res.render('quizes/new', {quiz: quiz, errors: err.errors});
+			}
+			else {
+				//guarda en la DB los campos pregunta y respuesta de quiz
+				quiz.save({fields: ["pregunta", "respuesta"]}).then(function(){ //solo los campos pregunta y respuesta para evitar virus
+					res.redirect('/quizes'); // Redirección HTTP (URL relativo) lista de preguntas, pues /quizes/create no tiene vista asociada
+				}); 				
+			}
+		}
+	);
+};
 
 // GET /author
 exports.author = function(req, res) {

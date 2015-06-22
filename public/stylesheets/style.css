@@ -31,3 +31,5 @@ td                  { padding: 8px;
 
 tr:hover td         { background: #ccc; 
 	                  color: #222; }
+
+#ErrorMsgs			{ color: #f61; font-size: smaler; }
