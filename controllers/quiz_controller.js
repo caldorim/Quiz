@@ -23,10 +23,11 @@ exports.load = function(req, res, next, quizId) {
 exports.index = function(req, res) {
   //Se captura el parámetro "search" (ver /quizes/index.ejs) para filtrar
   var buscar = req.query.search||"";
+  var buscarTema = req.query.searchTema||"%";
   buscar = "%" + buscar.toLowerCase().replace(/ /g,"%") + "%"; //Sustituimos los espacios en blanco por %
   console.log("Cadena a buscar: "+buscar);
 
-  models.Quiz.findAll({where: ["lower(pregunta) like ?", buscar], order: "pregunta"}).then(function(quizes) {
+  models.Quiz.findAll({where: ["lower(pregunta) like ? and tema like ?", buscar, buscarTema], order: "pregunta"}).then(function(quizes) {
   	res.render('quizes/index.ejs', { quizes: quizes, errors: []});
   }).catch(function(error) { next(error);})
 };
@@ -51,7 +52,7 @@ exports.answer = function(req, res) {
 exports.new = function(req,res) {
 	var quiz = models.Quiz.build({ //crea objeto quiz (build es de sequelize)
 		  //Los campos deben ser iguales a los campos de la tabla
-          pregunta: "Pregunta", respuesta: "Respuesta"
+          pregunta: "Pregunta", respuesta: "Respuesta", tema: "Tema"
 		});
 	res.render('quizes/new', {quiz: quiz, errors: []});
 };
@@ -68,7 +69,7 @@ exports.create = function(req, res) {
 			else {
 				//guarda en la DB los campos pregunta y respuesta de quiz
 				quiz
-				.save({fields: ["pregunta", "respuesta"]}) //solo los campos pregunta y respuesta para evitar virus
+				.save({fields: ["pregunta", "respuesta", "tema"]}) //solo los campos necesarios para evitar virus
 				.then(function(){ res.redirect('/quizes');}); //Redirección HTTP (URL relativo) lista de preguntas, pues /quizes/create no tiene vista asociada
 			}
 		}
@@ -85,6 +86,7 @@ exports.edit = function(req, res) {
 exports.update = function(req, res) {
 	req.quiz.pregunta = req.body.quiz.pregunta;
 	req.quiz.respuesta = req.body.quiz.respuesta;
+	req.quiz.tema = req.body.quiz.tema;
 
 	req.quiz.validate().then(function(err){
 		if (err) {
@@ -92,7 +94,7 @@ exports.update = function(req, res) {
 		}
 		else {
 			req.quiz  
-			.save({ fields: ["pregunta", "respuesta"] })     //save: guarda campos pregunta y respuesta en DB
+			.save({ fields: ["pregunta", "respuesta", "tema"] })     //save: guarda campos necesarios en DB
 			.then(function(){ res.redirect('/quizes'); }); //Redirección HTTP a lista de preguntas (URL relativo)
 		}
 	});
@@ -107,5 +109,5 @@ exports.destroy = function(req, res) {
 
 // GET /author
 exports.author = function(req, res) {
-  res.render('author', {autor: 'Joaqu&iacute;n Caldito'});
+  res.render('author', {autor: 'Joaqu&iacute;n Caldito', errors: []});
 };
