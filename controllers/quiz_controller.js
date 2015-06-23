@@ -26,7 +26,7 @@ exports.index = function(req, res) {
   buscar = "%" + buscar.toLowerCase().replace(/ /g,"%") + "%"; //Sustituimos los espacios en blanco por %
   console.log("Cadena a buscar: "+buscar);
 
-  models.Quiz.findAll({where: ["lower(pregunta) like ?", buscar]}).then(function(quizes) {
+  models.Quiz.findAll({where: ["lower(pregunta) like ?", buscar], order: "pregunta"}).then(function(quizes) {
   	res.render('quizes/index.ejs', { quizes: quizes, errors: []});
   }).catch(function(error) { next(error);})
 };
@@ -67,12 +67,35 @@ exports.create = function(req, res) {
 			}
 			else {
 				//guarda en la DB los campos pregunta y respuesta de quiz
-				quiz.save({fields: ["pregunta", "respuesta"]}).then(function(){ //solo los campos pregunta y respuesta para evitar virus
-					res.redirect('/quizes'); // Redirección HTTP (URL relativo) lista de preguntas, pues /quizes/create no tiene vista asociada
-				}); 				
+				quiz
+				.save({fields: ["pregunta", "respuesta"]}) //solo los campos pregunta y respuesta para evitar virus
+				.then(function(){ res.redirect('/quizes');}); //Redirección HTTP (URL relativo) lista de preguntas, pues /quizes/create no tiene vista asociada
 			}
 		}
 	);
+};
+
+// GET /quizes/:id/edit
+exports.edit = function(req, res) {
+	var quiz = req.quiz; //autoload de instancia de quiz
+	res.render('quizes/edit', {quiz: quiz, errors: []});
+};
+
+// put /quizes/:id
+exports.update = function(req, res) {
+	req.quiz.pregunta = req.body.quiz.pregunta;
+	req.quiz.respuesta = req.body.quiz.respuesta;
+
+	req.quiz.validate().then(function(err){
+		if (err) {
+			res.render('quizes/edit', {quiz: req.quiz, errors: err.errors});
+		}
+		else {
+			req.quiz  
+			.save({ fields: ["pregunta", "respuesta"] })     //save: guarda campos pregunta y respuesta en DB
+			.then(function(){ res.redirect('/quizes'); }); //Redirección HTTP a lista de preguntas (URL relativo)
+		}
+	});
 };
 
 // GET /author
