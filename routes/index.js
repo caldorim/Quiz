@@ -22,6 +22,8 @@ router.get('/quizes/new', quizController.new);
 router.post('/quizes/create', quizController.create); //Cuando creamos algo debe ser post
 router.get('/quizes/:quizId(\\d+)/edit', quizController.edit);
 router.put('/quizes/:quizId(\\d+)', quizController.update);
+router.delete('/quizes/:quizId(\\d+)', quizController.destroy);
+
 
 //Añadimos un get para los autores
 router.get('/author', quizController.author);
