@@ -28,7 +28,6 @@ exports.index = function(req, res) {
   buscarTema = "%" + buscarTema + "%";
   console.log("Cadena a buscar: "+buscar+". Tema a buscar: "+buscarTema);
 
-  La siguiente consulta no funciona en heroku
   models.Quiz.findAll({where: ["lower(pregunta) like ? and tema like ?", buscar, buscarTema], order: "pregunta"}).then(function(quizes) {
   	res.render('quizes/index.ejs', { quizes: quizes, errors: []});
   }).catch(function(error) { next(error);})
