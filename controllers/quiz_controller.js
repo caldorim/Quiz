@@ -28,23 +28,10 @@ exports.index = function(req, res) {
   buscarTema = "%" + buscarTema + "%";
   console.log("Cadena a buscar: "+buscar+". Tema a buscar: "+buscarTema);
 
-  //controlo el tipo de consulta según el parámetro buscarTema 
-  //Lo ideal es hacerlo con la consulta del final, sin necesidad de if, pero no funciona en heroku (si funciona en local)
-  if (buscarTema === "%%") { //Es una búsqueda normal 
-  	models.Quiz.findAll({where: ["lower(pregunta) like ?", buscar], order: "pregunta"}).then(function(quizes) {
-  		res.render('quizes/index.ejs', { quizes: quizes, errors: []});
-  	}).catch(function(error) { next(error);})
-  }
-  else { //Es una búsqueda por tema
-  	models.Quiz.findAll({where: ["tema like ?", buscarTema], order: "pregunta"}).then(function(quizes) {
-  		res.render('quizes/index.ejs', { quizes: quizes, errors: []});
-  	}).catch(function(error) { next(error);})
-  }
-
-  //La siguiente consulta no funciona en heroku
-  //models.Quiz.findAll({where: ["lower(pregunta) like ? and tema like ?", buscar, buscarTema], order: "pregunta"}).then(function(quizes) {
-  //	res.render('quizes/index.ejs', { quizes: quizes, errors: []});
-  //}).catch(function(error) { next(error);})
+  La siguiente consulta no funciona en heroku
+  models.Quiz.findAll({where: ["lower(pregunta) like ? and tema like ?", buscar, buscarTema], order: "pregunta"}).then(function(quizes) {
+  	res.render('quizes/index.ejs', { quizes: quizes, errors: []});
+  }).catch(function(error) { next(error);})
 };
 
 exports.show = function(req, res) {
