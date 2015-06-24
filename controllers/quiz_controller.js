@@ -23,12 +23,15 @@ exports.load = function(req, res, next, quizId) {
 exports.index = function(req, res) {
   //Se captura el parámetro "search" (ver /quizes/index.ejs) para filtrar
   var buscar = req.query.search||"";
-  var buscarTema = req.query.searchTema||"%";
+  var buscarTema = req.query.searchTema||"";
   buscar = "%" + buscar.toLowerCase().replace(/ /g,"%") + "%"; //Sustituimos los espacios en blanco por %
-  console.log("Cadena a buscar: "+buscar);
+  buscarTema = "%" + buscarTema + "%";
+  console.log("Cadena a buscar: "+buscar+". Tema a buscar: "+buscarTema);
 
-  models.Quiz.findAll({where: ["lower(pregunta) like ? and tema like ?", buscar, buscarTema], order: "pregunta"}).then(function(quizes) {
+  models.Quiz.findAll({where: ["lower(pregunta) like ?", buscar], order: "pregunta"}).then(function(quizes) {
   	res.render('quizes/index.ejs', { quizes: quizes, errors: []});
+  //models.Quiz.findAll({where: ["lower(pregunta) like ? and tema like ?", buscar, buscarTema], order: "pregunta"}).then(function(quizes) {
+  //	res.render('quizes/index.ejs', { quizes: quizes, errors: []});
   }).catch(function(error) { next(error);})
 };
 
