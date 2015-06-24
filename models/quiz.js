@@ -13,10 +13,10 @@ module.exports = function(sequelize, DataTypes) {
 		    	validate: { notEmpty: {msg: "·Falta Respuesta"}}
 		    },
 		    tema: {
-		    	type: DataTypes.ENUM,
-		    	values: ['otros', 'humanidades', 'ocio', 'ciencia', 'tecnologia'],
-		    	validate: { notEmpty: {msg: "·Falta Tema"}}
-		    	//validate: { isIn: [['otros', humanidades', 'ocio', 'ciencia', 'tecnologia']]  }
+		    	type: DataTypes.STRING,
+		    	//values: ['otros', 'humanidades', 'ocio', 'ciencia', 'tecnologia'],
+		    	//validate: { notEmpty: {msg: "·Falta Tema"}}
+		    	validate: { isIn: [['otros', 'humanidades', 'ocio', 'ciencia', 'tecnologia']]  }
 		    }
 		});
 }
