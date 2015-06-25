@@ -1,7 +1,9 @@
-body 				{ background: #333; }
+body 						{ background: #333; background-image:url(/images/fondo3.jpg); }
 
-#page-wrap:after	{ content: "Smartphone Layout"; }
+#page-wrap:after			{ content: "<Smartphone Layout>"; }
+#page-wrap					{ width: 99%; }
 
-h2 span, section h3	{ display: none; }
-body 				{ font-size: xx-large; }
-footer, input		{ font-size: large; }
+h2 span, section h3			{ display: none; }
+body 						{ font-size: xx-large; }
+footer, input, button, 
+a, select					{ font-size: large; }

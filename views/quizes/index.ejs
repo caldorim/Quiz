@@ -1,7 +1,9 @@
 <form method="get" action="/quizes">
 	Filtrar con:
 	<input type="text" name="search"/>
-	<input type="submit" value="Buscar">
+	<button type="submit" >
+	   <img src="/images/buscar.png" width=16 height=16 border=0 ALT="Buscar">
+	</button>
 </form>
 <table>
   <tr>
@@ -17,16 +19,22 @@
 		<td width="10%">
 			<form method="get" action="/quizes">
 				<input type="hidden" name="searchTema" value="<%= quizes[i].tema %>" />
-				<input type="submit" value="<%= quizes[i].tema %>">
+				<button type="submit">
+					<img src="/images/<%=quizes[i].tema%>.png" width=56 height=28 border=0 ALT="Editar">
+				</button>
 			</form>
 		</td>
 		<td width="10%">
-			<a href="quizes/<%= quizes[i].id %>/edit"><button> editar </button></a>
+			<a href="quizes/<%= quizes[i].id %>/edit">
+				<button>
+	   				<img src="/images/editar.png" width=28 height=28 border=0 ALT="Editar">
+				</button>
+			</a>
 		</td>
 		<td width="10%">
 			<form method="post" action="quizes/<%= quizes[i].id %>?_method=delete">
 				<button type="submit" onClick="return confirm('Borrar: <%= quizes[i].pregunta %>');">
-					borrar
+					<img src="/images/borrar.png" width=28 height=28 border=0 ALT="Borrar">
 				</button>
 			</form>
 		</td>
