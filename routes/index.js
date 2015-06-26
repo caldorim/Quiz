@@ -3,6 +3,7 @@ var router = express.Router();
 
 //Incluimos el controlador para las preguntas
 var quizController = require('../controllers/quiz_controller');
+var commentController = require('../controllers/comment_controller');
 
 /* GET home page. */
 //La ruta es /
@@ -23,6 +24,9 @@ router.post('/quizes/create', quizController.create); //Cuando creamos algo debe
 router.get('/quizes/:quizId(\\d+)/edit', quizController.edit);
 router.put('/quizes/:quizId(\\d+)', quizController.update);
 router.delete('/quizes/:quizId(\\d+)', quizController.destroy);
+
+router.get('/quizes/:quizId(\\d+)/comments/new', commentController.new);
+router.post('/quizes/:quizId(\\d+)/comments', commentController.create);
 
 
 //Añadimos un get para los autores

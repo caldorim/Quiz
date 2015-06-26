@@ -7,8 +7,10 @@ function limpiarAcentos(str) {
 
 //Autoload - factoriza el código si la ruta incluye :quizId
 exports.load = function(req, res, next, quizId) {
-  models.Quiz.find(quizId).then(
-    function(quiz) {
+  models.Quiz.find({
+  	where: { id: Number(quizId) },
+  	include: [{ model: models.Comment }]
+  }).then(function(quiz) {
       if (quiz) {
       	req.quiz = quiz;
       	next();  //para que se ejecuete el MW correspondiente
