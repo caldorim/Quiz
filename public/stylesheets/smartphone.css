@@ -1,6 +1,6 @@
 body 						{ background: #333; background-image:url(/images/fondo3.jpg); }
 
-#page-wrap:after			{ content: "<Smartphone Layout>"; }
+#page-wrap:after			{ content: "<Smartphone Layout>"; color: cyan; font-weight: bold;}
 #page-wrap					{ width: 99%; }
 
 h2 span, section h3			{ display: none; }

@@ -1,10 +1,14 @@
 *					{ margin: 0; padding: 0; }
 body 				{ font-size: 16px Georgia, serif; background-image:url(/images/fondo2.jpg);}
 
-#page-wrap			{ margin: 2% auto; color: white; width: 99%; }
+#page-wrap			{ margin: 1% auto; color: white; width: 99%; }
 #page-wrap > .main 	{ border: 1px solid #999; padding: 1%; margin-bottom: 1px; color: black; }
 
-.main 				{ border-radius: 10px; }
+.main 				{ border-radius: 10px; opacity: 0.9;
+					  -webkit-box-shadow: #B3B3B3 4px 4px 4px;-moz-box-shadow: #B3B3B3 4px 4px 4px; box-shadow: #B3B3B3 4px 4px 4px;
+					}
+.right 				{ float: right; }
+.left 				{ float: left; }
 
 section > div		{ padding: 20px; }
 header, nav         { background: #eee; text-align: center; }

@@ -4,6 +4,7 @@ var router = express.Router();
 //Incluimos el controlador para las preguntas
 var quizController = require('../controllers/quiz_controller');
 var commentController = require('../controllers/comment_controller');
+var sessionController = require('../controllers/session_controller');
 
 /* GET home page. */
 //La ruta es /
@@ -14,6 +15,11 @@ router.get('/', function(req, res) {
 //Autoload de comandos con :quizId
 //Si existe el parametro fuerza la entrada por el autoload
 router.param('quizId', quizController.load);
+
+//Definición de rutas de sesión
+router.get('/login', sessionController.new);       //formulario de login
+router.post('/login', sessionController.create);   //crear sesión
+router.get('/logout', sessionController.destroy); //destruir sesión
 
 //Definición de rutas de /quizes
 router.get('/quizes', quizController.index);

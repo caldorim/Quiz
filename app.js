@@ -7,6 +7,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var partials = require('express-partials');
 var methodOverride = require('method-override');
+var session = require('express-session');
 
 //Importar enrutadores
 var routes = require('./routes/index');
@@ -26,10 +27,23 @@ app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
-app.use(cookieParser());
+app.use(cookieParser('caldo-quiz miriadax'));
+app.use(session());
 app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(partials()); //con () para generar el MW a instalar
+
+//Helpers dinámicos
+app.use(function(req, res, next) {
+    //guardar path en session.redir para después de login
+    if (!req.path.match(/\/login|\/logout/)) {
+        req.session.redir = req.path;
+    }
+
+    //hacer visible req.session en las vistas, para evitar pasarlo por parámetro
+    res.locals.session = req.session;
+    next();
+});
 
 //Instalar enrutadores
 app.use('/', routes);
