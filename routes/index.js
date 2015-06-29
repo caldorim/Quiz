@@ -15,6 +15,7 @@ router.get('/', function(req, res) {
 //Autoload de comandos con :quizId
 //Si existe el parametro fuerza la entrada por el autoload
 router.param('quizId', quizController.load);
+router.param('commentId', commentController.load);
 
 //Definición de rutas de sesión
 router.get('/login', sessionController.new);       //formulario de login
@@ -34,7 +35,7 @@ router.delete('/quizes/:quizId(\\d+)', sessionController.loginRequired, quizCont
 
 router.get('/quizes/:quizId(\\d+)/comments/new', commentController.new);
 router.post('/quizes/:quizId(\\d+)/comments', commentController.create);
-
+router.get('/quizes/:quizId(\\d+)/comments/:commentId(\\d+)/publish', sessionController.loginRequired, commentController.publish);
 
 //Añadimos un get para los autores
 router.get('/author', quizController.author);
