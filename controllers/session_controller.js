@@ -1,6 +1,15 @@
+//En caso de haber perdido la sesion no se puede redireccionar, por lo que iriamos a la raíz
+function redireccionar(req) {
+	var dir = "/";	
+	if (req.session && req.session.redir ) {
+		dir = req.session.redir.toString();
+	}
+	return dir;
+}
+
 //MW de autorización de accesos HTTP restringidos
 exports.loginRequired = function(req, res, next) {
-	if (req.session.user) { //Si hay usuario logado pasamos al siguiente MW
+	if (req.session && req.session.user) { //Si hay usuario logado pasamos al siguiente MW
 		next();
 	}
 	else { //En caso contrario redireccionamos a la ventana de login
@@ -40,12 +49,12 @@ exports.create = function(req, res) {
 		// Crear req.session.user y guardar campos id y username
 		// La sesión se define por la existencia de: req.session.user
 		req.session.user = { id: user.id, username: user.username, timeout: timeout};
-		res.redirect(req.session.redir.toString()); //redirección al path anterior al login
+		res.redirect(redireccionar(req)); //redirección al path anterior al login
 	});
 };
 
 //DELETE /logout  -- Destruir sesión
 exports.destroy = function(req, res) {
 	delete req.session.user;
-	res.redirect(req.session.redir.toString());  //redireción al path anterior al login
+	res.redirect(redireccionar(req));  //redireción al path anterior al login
 };
