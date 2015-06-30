@@ -22,6 +22,13 @@ exports.create = function(req, res) {
 	var login = req.body.login;
 	var password = req.body.password;
 
+	//Practica 9: variable para controlar el tiempo
+	var ahora = (new Date()).getTime();
+	var timeout = 30000 + ahora;
+	console.log("Entrando en session_controller...");
+	console.log("Ahora:   "+ahora);
+    console.log("Timeout: "+timeout);
+
 	var userController = require('./user_controller');
 	userController.autenticar(login, password, function(error, user) {
 		if (error) { //si hay error retornamos los mensajes de error de sesión
@@ -32,7 +39,7 @@ exports.create = function(req, res) {
 
 		// Crear req.session.user y guardar campos id y username
 		// La sesión se define por la existencia de: req.session.user
-		req.session.user = { id: user.id, username: user.username };
+		req.session.user = { id: user.id, username: user.username, timeout: timeout};
 		res.redirect(req.session.redir.toString()); //redirección al path anterior al login
 	});
 };

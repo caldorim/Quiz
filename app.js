@@ -45,6 +45,32 @@ app.use(function(req, res, next) {
     next();
 });
 
+//MW para el control de sesión
+app.use(function(req, res, next) {
+    var tiempoInactivo = 30000;
+    var ahora = (new Date()).getTime();
+    var nuevoTimeout = tiempoInactivo + ahora;
+    console.log("---------------------------------------------------------------");
+    console.log("Entrando en app.use...");
+    console.log("Ahora:   "+ahora);
+    
+    if (req.session.user) { //Si estamos logados
+        console.log("Timeout: "+req.session.user.timeout);
+        if (req.session.user.timeout > ahora) { //Si aun no ha expirado
+            console.log("Actualizando timeout");
+            console.log("---> Valor antiguo: "+req.session.user.timeout);
+            req.session.user.timeout = nuevoTimeout; //Actualizamos el timeOut
+            console.log("---> Valor nuevo:   "+req.session.user.timeout);
+        }
+        else {
+            console.log("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+            console.log("TIMEOUT: Cerramos la sesion");
+            req.session.destroy(); //Si la sesión ha expirado cerramos
+        }
+    }
+    next();
+});
+
 //Instalar enrutadores
 app.use('/', routes);
 //app.use('/users', users); //no se requiere
