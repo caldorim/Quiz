@@ -29,9 +29,15 @@ var sequelize = new Sequelize(DB_name, user, pwd,
 var Quiz = sequelize.import(path.join(__dirname, 'quiz'));
 var Comment = sequelize.import(path.join(__dirname, 'comment'));
 
-//Declaración de relación 1-N entre Quiz y Comment (métodos de sequelize)
+//Declaración de relación 1-N entre Quiz y Comment (métodos de sequelize) con borrado en cascada
 Comment.belongsTo(Quiz);
-Quiz.hasMany(Comment);
+//Quiz.hasMany(Comment);
+Quiz.hasMany(Comment, {
+'constraints': true,
+'onUpdate': 'cascade',
+'onDelete': 'cascade',
+'hooks': true
+}); 
 
 //exportar definición de las tablas Quiz y Comment para que se pueda usar en otros lugares de la aplicación
 exports.Quiz = Quiz;
