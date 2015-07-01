@@ -2,8 +2,10 @@ var models = require('../models/models.js');
 
 exports.statistics = function(req, res) {
 	console.log('Entrando en statistics...');
-	var errors = req.session.errors || {};
-	req.session.errors = {};  //Reseteamos los errores
+	if (req.session) {
+		var errors = req.session.errors || {};
+		req.session.errors = {};  //Reseteamos los errores
+	}
 	var estadisticas = {
 		numPreguntas: 0,
 		numComentarios : 0,
@@ -30,8 +32,8 @@ exports.statistics = function(req, res) {
  		.then(function(numComentarios) { //Cálculo de número de comentarios
   			estadisticas.numComentarios = numComentarios;
   			//Con los tres valores que tenemos ya podemos calcular el resto
-  			if (estadisticas.numComentarios != 0) { //Para evitar división por 0
-				estadisticas.comentariosMedios = (estadisticas.numPreguntas / estadisticas.numComentarios).toFixed(2);
+  			if (estadisticas.numPreguntas != 0) { //Para evitar división por 0
+				estadisticas.comentariosMedios = (estadisticas.numComentarios / estadisticas.numPreguntas).toFixed(2);
 			}
 			estadisticas.sinComentarios = estadisticas.numPreguntas - estadisticas.conComentarios;
 			res.render('quizes/statistics', {estadisticas: estadisticas, errors: errors} );
