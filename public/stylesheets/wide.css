@@ -1,6 +1,5 @@
 body 				{ background-color: #999 ; background-image:url(/images/fondo1.jpg);} 
 
-#page-wrap:after 	{ content: "<Wide Layout>"; color: red; font-weight: bold;}
 #page-wrap			{ width: 95%; }
 
 nav					{ float: left; width: 15%; height: 380px }
